@@ -13,20 +13,15 @@ local build = {}
 local plugin = require("plugin")
 
 function build.build_css(executable, src_folder, css_file)
-   if not (plugin.path.is_file(bin_folder .. "/tailwindcss") or plugin.path.is_file(bin_folder .. "/tailwindcss.exe")) then
-      download.download_tailwind(bin_folder)
-   end
-
-   build.run_tailwind(executable, src_folder, css_file)
+  build.run_sass(executable, src_folder, css_file)
 end
 
-function build.run_tailwind(executable, src_folder, css_file)
-   --- Runs Tailwind and builds the CSS file in the ./public folder.
+function build.run_sass(executable, src_folder, css_file)
+  --- Runs SASS and builds the CSS file in the ./public folder.
 
-   plugin.log.info("Building CSS...")
-   plugin.command.exec(
-   { executable, "build", "-c", src_folder .. "/tailwind.config.js", "-i", src_folder .. "/input.css", "-o",
-      "public/" .. css_file, "--minify" }, "inhert", "inhert")
+  plugin.log.info("Building CSS...")
+  plugin.command.exec(
+  { executable, src_folder .. "/index.scss", css_file }, "inhert", "inhert")
 end
 
 return build
